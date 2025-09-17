@@ -1,6 +1,7 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class InputManager : MonoBehaviour, Inputs.IPlayerActions
 {
@@ -26,19 +27,14 @@ public class InputManager : MonoBehaviour, Inputs.IPlayerActions
     public event Action<Vector2> LookInputEvent;
 
     // jumping
-    public event Action JumpStartedInputEvent;
-    public event Action JumpPerformedInputEvent;
-    public event Action JumpCanceledInputEvent;
-
+    public event Action<InputAction.CallbackContext> JumpInputEvent;
+    
     // sprint
-    public event Action SprintStartedInputEvent;
-    public event Action SprintPerformedInputEvent;
-    public event Action SprintCanceledInputEvent;
+    public event Action<InputAction.CallbackContext> SprintInputEvent;
 
     // crouch
-    public event Action CrouchStartedInputEvent;
-    public event Action CrouchPerformedInputEvent;
-    public event Action CrouchCanceledInputEvent;
+    public event Action<InputAction.CallbackContext> CrouchInputEvent;
+
 
     #endregion
 
@@ -57,23 +53,17 @@ public class InputManager : MonoBehaviour, Inputs.IPlayerActions
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if (context.started) JumpStartedInputEvent?.Invoke();
-        else if (context.performed) JumpPerformedInputEvent?.Invoke();
-        else if (context.canceled) JumpCanceledInputEvent?.Invoke();
+        JumpInputEvent?.Invoke(context);
     }
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        if (context.started) SprintStartedInputEvent?.Invoke();
-        else if (context.performed) SprintPerformedInputEvent?.Invoke();
-        else if (context.canceled) SprintCanceledInputEvent?.Invoke();
+        SprintInputEvent?.Invoke(context);
     }
 
     public void OnCrouch(InputAction.CallbackContext context)
     {
-        if (context.started) CrouchStartedInputEvent?.Invoke();
-        else if (context.performed) CrouchPerformedInputEvent?.Invoke();
-        else if (context.canceled) CrouchCanceledInputEvent?.Invoke();
+        CrouchInputEvent?.Invoke(context);
     }
 
     #endregion
